@@ -137,7 +137,7 @@ export function DashboardSidebar() {
                   {profile?.firstName ? `${profile.firstName} ${profile.lastName}` : (user?.displayName || "Member")}
                 </span>
                 <span className="text-[9px] text-accent font-black tracking-tighter truncate uppercase flex items-center gap-1">
-                  <Hash className="h-2 w-2" /> {profile?.accountNumber || "PENDING"}
+                  <Hash className="h-2 w-2" /> ACCOUNT: {profile?.accountNumber || "PENDING"}
                 </span>
               </div>
             </div>

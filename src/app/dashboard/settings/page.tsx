@@ -113,7 +113,7 @@ export default function SettingsPage() {
     setTimeout(() => {
       setSaving(false);
       setIsEditing(false);
-      toast({ title: "Profile Updated", description: "Your administrative records have been synchronized." });
+      toast({ title: "Profile Updated", description: "Your institutional records have been synchronized." });
     }, 800);
   };
 
@@ -191,7 +191,7 @@ export default function SettingsPage() {
                 <div className="text-center space-y-4 w-full">
                   <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#002B5B] rounded-full text-white shadow-lg">
                     <Hash className="h-4 w-4 text-accent" />
-                    <span className="text-sm font-black tracking-widest uppercase">ID: {profile?.accountNumber || "CITY-PENDING"}</span>
+                    <span className="text-sm font-black tracking-widest uppercase">Account Number: {profile?.accountNumber || "CITY-PENDING"}</span>
                   </div>
                   
                   <div className="space-y-4 pt-4">
@@ -285,17 +285,6 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-          
-          {!isAdmin && (
-            <Card className="bg-slate-50 border-2 border-dashed border-slate-200 p-8 rounded-[2rem] text-center">
-              <CardTitle className="text-primary mb-2 flex items-center justify-center gap-2">
-                <Lock className="h-5 w-5" /> Institutional Lockdown Active
-              </CardTitle>
-              <CardDescription className="font-medium max-w-lg mx-auto leading-relaxed">
-                To maintain the highest security standards, your identity records are managed by your assigned Banking Administrator. All profile modifications must be requested through institutional support.
-              </CardDescription>
-            </Card>
-          )}
         </div>
 
         <div className="lg:col-span-4 space-y-6">

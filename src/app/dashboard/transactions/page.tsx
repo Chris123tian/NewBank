@@ -290,7 +290,7 @@ function TransactionsContent() {
                       </h4>
                       <div className="bg-white/50 rounded-2xl p-6 border border-white/80 space-y-3 text-xs sm:text-sm">
                         <div className="flex flex-col sm:flex-row justify-between gap-1">
-                          <span className="text-slate-500 font-bold shrink-0">Member ID:</span>
+                          <span className="text-slate-500 font-bold shrink-0">Account Number:</span>
                           <span className="font-mono text-[10px] sm:text-xs break-all">{viewingTransaction.customerId || viewingTransaction.userId}</span>
                         </div>
                         <div className="flex flex-col sm:flex-row justify-between gap-1">
