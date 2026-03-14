@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useUser, useFirestore, useDoc, useAuth } from "@/firebase";
+import { useRouter } from "next/navigation";
+import { useUser, useFirestore, useDoc } from "@/firebase";
 import { useMemoFirebase } from "@/firebase/provider";
 import { doc } from "firebase/firestore";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
@@ -12,7 +12,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { Loader2 } from "lucide-react";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { Skeleton } from "@/components/ui/skeleton";
-import { initiateSignOut } from "@/firebase/non-blocking-login";
 
 export default function DashboardLayout({
   children,
@@ -21,9 +20,7 @@ export default function DashboardLayout({
 }) {
   const { user, isAuthReady } = useUser();
   const router = useRouter();
-  const pathname = usePathname();
   const db = useFirestore();
-  const auth = useAuth();
 
   // Fetch real-time Firestore profile
   const profileRef = useMemoFirebase(() => {
@@ -39,49 +36,6 @@ export default function DashboardLayout({
       router.replace("/auth");
     }
   }, [user, isAuthReady, router]);
-
-  // TERMINATION PROTOCOL: If profile is missing (deleted by admin), force logout
-  useEffect(() => {
-    if (isAuthReady && user && !isProfileLoading && !profile) {
-      // info@citybankglobal.com is the master admin and may not have a profile doc in /users
-      if (user.email !== "info@citybankglobal.com") {
-        initiateSignOut(auth).then(() => {
-          router.replace("/auth?reason=terminated");
-        });
-      }
-    }
-  }, [user, isAuthReady, isProfileLoading, profile, auth, router]);
-
-  // INACTIVITY PROTOCOL: Auto-logout after 35 minutes of inactivity
-  useEffect(() => {
-    if (!user || !isAuthReady) return;
-
-    const INACTIVITY_TIMEOUT = 35 * 60 * 1000; // 35 minutes
-    let timeoutId: NodeJS.Timeout;
-
-    const handleAutoLogout = async () => {
-      await initiateSignOut(auth);
-      router.replace("/auth?reason=inactive");
-    };
-
-    const resetTimer = () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      timeoutId = setTimeout(handleAutoLogout, INACTIVITY_TIMEOUT);
-    };
-
-    // Activity listeners for user engagement
-    const events = ["mousedown", "mousemove", "keypress", "scroll", "touchstart"];
-    
-    // Initialize timer
-    resetTimer();
-
-    events.forEach((name) => window.addEventListener(name, resetTimer));
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      events.forEach((name) => window.removeEventListener(name, resetTimer));
-    };
-  }, [user, isAuthReady, auth, router]);
 
   const displayName = useMemo(() => {
     if (profile?.firstName) {
@@ -101,8 +55,7 @@ export default function DashboardLayout({
     );
   }
 
-  // Prevent rendering if user is missing or profile was deleted
-  if (!user || (!profile && user.email !== "info@citybankglobal.com")) return null;
+  if (!user) return null;
 
   return (
     <SidebarProvider defaultOpen={true}>
