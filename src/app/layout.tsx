@@ -6,6 +6,9 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 export const metadata: Metadata = {
   title: 'City Bank Global',
   description: 'The Standard in Global Finance',
+  verification: {
+    google: 'oO6fAialF0fhjJKKPEYLyT1SjqljF6J_RZfHGjmOt7Q',
+  },
 };
 
 export default function RootLayout({
