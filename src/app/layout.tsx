@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'City Bank Global',
   description: 'The Standard in Global Finance',
   verification: {
-    google: 'oO6fAialF0fhjJKKPEYLyT1SjqljF6J_RZfHGjmOt7Q',
+    google: '98QhatCBytktKzMDuHLtAc0XzZCRkC-K4ntX0tlwcaM',
   },
 };
 
